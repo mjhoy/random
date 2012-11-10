@@ -1,0 +1,12 @@
+name:                logCleanup
+Version:             0.1
+Description:         Clears big logs.
+Author:              Michael Hoy
+Build-Type:          Simple
+Cabal-Version:       >=1.2
+
+Executable logCleanup
+  Main-is: LogCleanup.hs
+  Build-Depends: base >= 3
+                 , filepath >= 1.3
+                 , directory >= 1.1

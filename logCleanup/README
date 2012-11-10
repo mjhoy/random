@@ -1,0 +1,9 @@
+usage: logCleanup path
+
+looks recursively through directories in path for
+files that end in .log and are over 1MB, and clears them.
+
+install: cabal install --prefix=$HOME --user
+(installs to ~/bin)
+
+requires Haskell/Cabal
