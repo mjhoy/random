@@ -1,5 +1,5 @@
 name:                logCleanup
-Version:             0.1
+Version:             0.2
 Description:         Clears big logs.
 Author:              Michael Hoy
 Build-Type:          Simple

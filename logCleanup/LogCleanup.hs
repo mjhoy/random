@@ -13,7 +13,8 @@ main = getArgs >>= \args ->
   processArgs args
 
 processArgs (x:xs) = processLogFiles x
-processArgs [] = putStrLn $ "usage: logCleanup path\n\n" ++
+processArgs [] = putStrLn $ "logCleanup 0.2\n\n" ++
+  "usage: logCleanup path\n\n" ++
   "looks recursively through directories in path for\n" ++
   "files that end in .log and that are over 1MB, and\n" ++
   "clears them."

@@ -2,7 +2,7 @@ module LogFiles (FileInfo(..), printFileInfo, getLogFiles) where
 
 import System.Directory (getDirectoryContents, doesDirectoryExist)
 import System.FilePath ((</>), takeExtension)
-import Control.Monad (filterM)
+import Control.Monad (filterM, liftM)
 import System.IO (openFile, hClose, IOMode(..), hFileSize)
 import Control.Exception (bracket, handle, IOException)
 import Text.Printf (printf)
@@ -49,8 +49,7 @@ getLogFiles :: FilePath -> IO [FileInfo]
 getLogFiles top =
   getDirectoryContents top >>= \paths ->
   return (filter (`notElem` ignoreFiles) paths) >>= \paths ->
-  mapM recurse paths >>= \recursedPaths ->
-  return (concat recursedPaths)
+  liftM concat $ mapM recurse paths
   where recurse :: FilePath -> IO [FileInfo]
         recurse path = 
           let fullPath = top </> path
