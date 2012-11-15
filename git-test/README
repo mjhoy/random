@@ -1,0 +1,12 @@
+test your git.
+
+usage: git-test path
+
+Looks in `path` recursively for a git repo. Picks a random repo. Picks 
+a random commit, and a portion of a diff from that commit. With just the 
+partial diff, what repo is this from? (multiple choice.)
+
+todo: a lot.
+
+install: cabal install --prefix=$HOME --user
+(installs to ~/bin)
