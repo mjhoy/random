@@ -1,11 +1,11 @@
-name:                git-test
+name:                git-quiz
 Version:             0.1
-Description:         Tests your git
+Description:         quiz your git
 Author:              Michael Hoy
 Build-Type:          Simple
 Cabal-Version:       >=1.2
 
-Executable git-test
+Executable git-quiz
   Main-is: Main.hs
   Build-Depends: base >= 3
                  , filepath >= 1.3

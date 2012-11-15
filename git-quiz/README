@@ -1,6 +1,6 @@
-test your git.
+quiz your git.
 
-usage: git-test path
+usage: git-quiz path
 
 Looks in `path` recursively for a git repo. Picks a random repo. Picks 
 a random commit, and a portion of a diff from that commit. With just the 
