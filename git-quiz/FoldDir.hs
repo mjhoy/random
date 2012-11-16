@@ -6,6 +6,7 @@ import System.FilePath ((</>), takeExtension)
 import FileInfo (Info(..), getInfo)
 import Data.Char (toLower)
 import FileUtil (isDirectory, getUsefulContents)
+import Shuffle (shuffle)
 
 data Iterate seed = Done { unwrap :: seed }
                   | Skip { unwrap :: seed }
@@ -19,7 +20,7 @@ foldTree iter initSeed path = do
     endSeed <- fold initSeed path
     return (unwrap endSeed)
   where
-    fold seed subpath = getUsefulContents subpath >>= walk seed subpath
+    fold seed subpath = getUsefulContents subpath >>= shuffle >>= walk seed subpath
     walk seed subpath (name:names) = do
       let path' = subpath </> name
       info <- getInfo path'

@@ -13,6 +13,8 @@ import Quiz (quiz)
 
 gitReposIterator :: Iterator [FilePath]
 gitReposIterator paths info
+    | length paths == 3
+      = Done paths
     | isDirectory info && takeFileName path == ".git"
       = Skip ((takeDirectory path):paths)
     | isDirectory info && (head (takeFileName path) == '.' ||

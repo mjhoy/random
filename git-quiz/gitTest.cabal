@@ -1,5 +1,5 @@
 name:                git-quiz
-Version:             0.1
+Version:             0.2
 Description:         quiz your git
 Author:              Michael Hoy
 Build-Type:          Simple
@@ -13,3 +13,4 @@ Executable git-quiz
                  , random >= 1.0
                  , process >= 1.1
                  , old-time >= 1.1
+                 , array >= 0.4

@@ -7,7 +7,7 @@ main = getArgs >>= \args ->
   processArgs args
 
 processArgs (path:xs) = runQuiz path
-processArgs [] = putStrLn $ "git-quiz 0.1\n\n" ++
+processArgs [] = putStrLn $ "git-quiz 0.2\n\n" ++
   "usage: git-quiz path\n\n" ++
   "where `path` contains git repos as subdirectories.\n" ++
   "quizes your git knowledge."
