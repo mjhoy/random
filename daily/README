@@ -1,0 +1,10 @@
+daily
+-----
+
+Simple way to keep journal entries.
+
+Inspired by: http://www.stochasticgeometry.ie/2012/11/23/vimwiki/
+
+Creates a file ~/.journal/year-month-day.md and opens in Vim, prepared
+with a "tags" array for YAML metadata (for future use). If file exists,
+opens it in Vim.

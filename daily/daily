@@ -1,0 +1,67 @@
+#!/usr/bin/env ruby
+
+require 'shellwords'
+
+module Daily
+  class List
+    def list
+      dir = File.expand_path("~/.journal/")
+      Dir["#{dir}/*.md"]
+    end
+  end
+
+  class VimCommand
+    def initialize(time)
+      @time = time
+    end
+
+    def journal_path
+      format_time = @time.strftime("%Y-%m-%d")
+      extension = "md"
+      dir = File.expand_path("~/.journal/")
+      File.join(dir, "#{format_time}.#{extension}")
+    end
+
+    def vim_template_cmd
+      "+normal i#{DATA.read}"
+    end
+
+    def new_file_command
+      %(vim "#{vim_template_cmd}" "+$" #{journal_path})
+    end
+
+    def existing_file_command
+      "vim #{journal_path}"
+    end
+
+    def command
+      if File.exists?(journal_path)
+        existing_file_command
+      else
+        new_file_command
+      end
+    end
+  end
+end
+
+usage = 'usage: daily [list]'
+
+if ARGV.length > 0
+  if (ARGV.shift == "list")
+    puts Daily::List.new.list
+  else
+    puts usage
+  end
+else
+  dir = File.expand_path("~/.journal/")
+  unless Dir.exists?(dir)
+    puts "mkdir #{dir}"
+    Dir.mkdir(dir)
+  end
+  exec Daily::VimCommand.new(Time.new).command
+end
+
+__END__
+---
+tags: []
+---
