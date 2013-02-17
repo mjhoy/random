@@ -1,0 +1,23 @@
+Produces CSV output of `timestamp, lines_changed` for all commits in all git
+repositories under a given directory in the last week.
+
+e.g.,
+
+$ workweek ~/work | head
+
+timestamp, lines_changed
+1360533157, 1
+1360533234, 1
+1360533399, 13
+1360533491, 1
+1360534499, 12
+1360535338, 17
+1360537382, 155
+1360590350, 44
+1360590833, 13
+
+$ workweek ~/work | wc -l
+
+55
+
+(54 commits made in the last week in ~/work)

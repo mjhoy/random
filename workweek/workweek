@@ -1,0 +1,95 @@
+#!/usr/bin/env ruby
+
+usage = "workweek WORKDIR"
+
+if !ARGV[0]
+  puts "Usage: #{usage}"
+  exit 1
+end
+
+# Walk a directory
+class DirWalker
+  def self.git_repos
+    @git_repos ||= []
+  end
+
+  def self.add_git_repo repo
+    @git_repos << repo unless git_repos.include? repo
+  end
+
+  def self.walk(top)
+    dirs, files = [], []
+    Dir.entries(top).each do |f|
+      DirWalker.add_git_repo top if f =~ /\.git/
+      next if f =~ /^\.\.?$/
+      f_p = File.join(top, f)
+      File.directory?(f_p) ? dirs.push(f_p) : files.push(f_p)
+    end
+    #block.call(files) if files[0]
+    dirs.each do |d|
+      unless d =~ /\.git$/
+        walk d
+      end
+    end
+  end
+end
+
+topdir = File.expand_path(ARGV[0])
+DirWalker.walk topdir
+DirWalker.git_repos
+
+commits = []
+
+class Commit
+  attr_reader :sha, :timestamp, :subject, :project
+  def initialize sha, timestamp, subject, project
+    @sha = sha
+    @timestamp = timestamp.to_i
+    @subject = subject
+    @project = project
+  end
+
+  def == another
+    another.class == self.class &&
+    self.sha == another.sha
+  end
+
+  def hash
+    sha.hash
+  end
+
+  alias :eql? :==
+
+  def lines_changed
+    @lines_changed ||= get_lines_changed
+  end
+
+  def <=> another
+    timestamp <=> another.timestamp
+  end
+
+  def to_csv
+    "#{timestamp}, #{lines_changed}"
+  end
+
+  def self.csv_header
+    "timestamp, lines_changed"
+  end
+
+  private
+
+  def get_lines_changed
+    out = %x{ cd "#{project.chomp}" && git log --numstat --pretty="%H" #{sha} -1 | awk 'NF==3 \{plus+=$1; minus+=$2\} END \{printf("+%d, -%d\\\\n", plus, minus)\}'}
+    (out.split(",")[0] || "0").to_i
+  end
+end
+
+DirWalker.git_repos.each do |repo|
+  %x{ cd #{repo} && git log --pretty=format:"%H\t%at\t%s\t#{repo}" --after="1 week ago" --no-merges }.lines do |l|
+    unless l =~ /\[no\s?track\]/
+      commits << Commit.new(*l.chomp.split("\t"))
+    end
+  end
+end
+
+puts Commit.csv_header + "\n" + commits.uniq.sort.map(&:to_csv).join("\n")
